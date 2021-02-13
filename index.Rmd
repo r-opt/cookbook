@@ -1,0 +1,38 @@
+--- 
+title: "Practical Discrete Optimization in R: A Cookbook"
+author: "Dirk Schumacher"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+bibliography: [book.bib, packages.bib]
+documentclass: book
+description: "A work-in-progress cookbook on {rmpk}."
+---
+
+# Introduction And Setup
+
+The goal of this book is to compile a list of practical Operations Research problems that can be solved with `rmpk`. During initial package development it acts as early documentation and also a big integration test to guide further development.
+
+It currently is assumed you already know a bit about the theory of mixed integer programming (I will write something about it at a later point in time).
+
+Each chapter is a broad problem category (like Scheduling or Puzzles) and contains a set of problems that help you get started.
+
+In order to run the examples in this book, you need the `rmpk` package together with a solver.
+
+```{r eval=FALSE}
+options(repos = c(
+    ropt = "https://r-opt.r-universe.dev",
+    CRAN = "https://cloud.r-project.org"))
+
+install.packages("rmpk") # modelling
+install.packages("ROIoptimzer") # ROI optimizer
+install.packages("ROI.plugin.glpk") # Bindings to GLPK
+```
+
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```

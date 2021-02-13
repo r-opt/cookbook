@@ -1,0 +1,13 @@
+bookdown::gitbook:
+  css: style.css
+  config:
+    sharing:
+      github: yes
+      facebook: false
+      twitter: false
+    download: false
+    toc:
+      before: |
+        <li><a href="./">Practical Discrete Optimization in R: A Cookbook</a></li>
+      after: |
+        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>

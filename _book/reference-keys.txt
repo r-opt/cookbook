@@ -1,0 +1,11 @@
+introduction-and-setup
+puzzles
+solve-sudokus-using-milp
+the-model
+solve-the-model
+routing-problems
+the-traveling-salesperson-problem-using-milp
+setting
+model-formulation
+results
+references
