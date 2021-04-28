@@ -24,7 +24,7 @@
 <meta name="author" content="Dirk Schumacher" />
 
 
-<meta name="date" content="2021-02-13" />
+<meta name="date" content="2021-04-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -151,7 +151,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.1.3" data-path="routing-problems.html"><a href="routing-problems.html#results"><i class="fa fa-check"></i><b>3.1.3</b> Results</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>4</b> References</a></li>
+<li class="chapter" data-level="4" data-path="graph-problems.html"><a href="graph-problems.html"><i class="fa fa-check"></i><b>4</b> Graph Problems</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="graph-problems.html"><a href="graph-problems.html#maximum-weight-matching"><i class="fa fa-check"></i><b>4.1</b> Maximum weight matching</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="graph-problems.html"><a href="graph-problems.html#introduction-and-setting"><i class="fa fa-check"></i><b>4.1.1</b> Introduction and Setting</a></li>
+<li class="chapter" data-level="4.1.2" data-path="graph-problems.html"><a href="graph-problems.html#the-model-and-solution"><i class="fa fa-check"></i><b>4.1.2</b> The model and solution</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -214,13 +222,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>We will use <code>glpk</code> to solve the above model. Note that we haven’t fixed any numbers to specific values. That means that the solver will find a valid sudoku without any prior hints.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="puzzles.html#cb4-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">optimize</span>()</span>
 <span id="cb4-2"><a href="puzzles.html#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="puzzles.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb4-4"><a href="puzzles.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># the following dplyr statement plots a 9x9 matrix</span></span>
-<span id="cb4-5"><a href="puzzles.html#cb4-5" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">get_variable_value</span>(x[i,j,k]) <span class="sc">%&gt;%</span></span>
-<span id="cb4-6"><a href="puzzles.html#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(value <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb4-7"><a href="puzzles.html#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(i, j, k) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-8"><a href="puzzles.html#cb4-8" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">spread</span>(j, k) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-9"><a href="puzzles.html#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>i)</span></code></pre></div>
+<span id="cb4-3"><a href="puzzles.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:igraph&#39;:
+## 
+##     as_data_frame, groups, union</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal,
+##     union</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="puzzles.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the following dplyr statement plots a 9x9 matrix</span></span>
+<span id="cb9-2"><a href="puzzles.html#cb9-2" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">get_variable_value</span>(x[i,j,k]) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="puzzles.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(value <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb9-4"><a href="puzzles.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(i, j, k) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="puzzles.html#cb9-5" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">spread</span>(j, k) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="puzzles.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>i)</span></code></pre></div>
 <pre><code>##   1 2 3 4 5 6 7 8 9
 ## 1 4 2 3 5 7 8 1 9 6
 ## 2 1 7 5 9 3 6 4 8 2
@@ -232,23 +252,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 8 6 4 2 7 8 1 9 5 3
 ## 9 5 3 8 4 9 2 6 7 1</code></pre>
 <p>If you want to solve a concrete sudoku you can fix certain cells to specific values. For example here we solve a sudoku that has the sequence from 1 to 9 in the first 3x3 matrix fixed.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="puzzles.html#cb6-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-2"><a href="puzzles.html#cb6-2" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-3"><a href="puzzles.html#cb6-3" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-4"><a href="puzzles.html#cb6-4" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-5"><a href="puzzles.html#cb6-5" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">5</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-6"><a href="puzzles.html#cb6-6" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">6</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-7"><a href="puzzles.html#cb6-7" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">7</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-8"><a href="puzzles.html#cb6-8" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">8</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-9"><a href="puzzles.html#cb6-9" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">9</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
-<span id="cb6-10"><a href="puzzles.html#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="puzzles.html#cb6-11" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">optimize</span>()</span>
-<span id="cb6-12"><a href="puzzles.html#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="puzzles.html#cb6-13" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">get_variable_value</span>(x[i,j,k]) <span class="sc">%&gt;%</span></span>
-<span id="cb6-14"><a href="puzzles.html#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(value <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb6-15"><a href="puzzles.html#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(i, j, k) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-16"><a href="puzzles.html#cb6-16" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">spread</span>(j, k) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-17"><a href="puzzles.html#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>i) </span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="puzzles.html#cb11-1" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="puzzles.html#cb11-2" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="puzzles.html#cb11-3" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-4"><a href="puzzles.html#cb11-4" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-5"><a href="puzzles.html#cb11-5" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">5</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-6"><a href="puzzles.html#cb11-6" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">6</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-7"><a href="puzzles.html#cb11-7" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">7</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-8"><a href="puzzles.html#cb11-8" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">8</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-9"><a href="puzzles.html#cb11-9" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(x[<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">9</span>] <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb11-10"><a href="puzzles.html#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="puzzles.html#cb11-11" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">optimize</span>()</span>
+<span id="cb11-12"><a href="puzzles.html#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="puzzles.html#cb11-13" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">get_variable_value</span>(x[i,j,k]) <span class="sc">%&gt;%</span></span>
+<span id="cb11-14"><a href="puzzles.html#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(value <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb11-15"><a href="puzzles.html#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(i, j, k) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-16"><a href="puzzles.html#cb11-16" aria-hidden="true" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">spread</span>(j, k) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-17"><a href="puzzles.html#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>i) </span></code></pre></div>
 <pre><code>##   1 2 3 4 5 6 7 8 9
 ## 1 1 2 3 5 8 4 9 7 6
 ## 2 4 5 6 9 7 3 8 2 1

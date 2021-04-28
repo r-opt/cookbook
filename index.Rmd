@@ -29,7 +29,11 @@ install.packages("ROIoptimzer") # ROI optimizer
 install.packages("ROI.plugin.glpk") # Bindings to GLPK
 ```
 
+**Please note however that this book is work in progress. So there will be typos, mistakes, missing/wrong references, unfinished sections, etc.**
 
+License:
+Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages

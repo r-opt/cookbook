@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Graph Problems | Practical Discrete Optimization in R: A Cookbook</title>
+  <meta name="description" content="A work-in-progress cookbook on {rmpk}." />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Graph Problems | Practical Discrete Optimization in R: A Cookbook" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A work-in-progress cookbook on {rmpk}." />
+  <meta name="github-repo" content="r-opt/cookbook" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Graph Problems | Practical Discrete Optimization in R: A Cookbook" />
+  
+  <meta name="twitter:description" content="A work-in-progress cookbook on {rmpk}." />
+  
+
+<meta name="author" content="Dirk Schumacher" />
+
+
+<meta name="date" content="2021-04-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="routing-problems.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Practical Discrete Optimization in R: A Cookbook</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction And Setup</a></li>
+<li class="chapter" data-level="2" data-path="puzzles.html"><a href="puzzles.html"><i class="fa fa-check"></i><b>2</b> Puzzles</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="puzzles.html"><a href="puzzles.html#solve-sudokus-using-milp"><i class="fa fa-check"></i><b>2.1</b> Solve Sudokus using MILP</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="puzzles.html"><a href="puzzles.html#the-model"><i class="fa fa-check"></i><b>2.1.1</b> The model</a></li>
+<li class="chapter" data-level="2.1.2" data-path="puzzles.html"><a href="puzzles.html#solve-the-model"><i class="fa fa-check"></i><b>2.1.2</b> Solve the model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="routing-problems.html"><a href="routing-problems.html"><i class="fa fa-check"></i><b>3</b> Routing Problems</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="routing-problems.html"><a href="routing-problems.html#the-traveling-salesperson-problem-using-milp"><i class="fa fa-check"></i><b>3.1</b> The Traveling Salesperson Problem using MILP</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="routing-problems.html"><a href="routing-problems.html#setting"><i class="fa fa-check"></i><b>3.1.1</b> Setting</a></li>
+<li class="chapter" data-level="3.1.2" data-path="routing-problems.html"><a href="routing-problems.html#model-formulation"><i class="fa fa-check"></i><b>3.1.2</b> Model formulation</a></li>
+<li class="chapter" data-level="3.1.3" data-path="routing-problems.html"><a href="routing-problems.html#results"><i class="fa fa-check"></i><b>3.1.3</b> Results</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="graph-problems.html"><a href="graph-problems.html"><i class="fa fa-check"></i><b>4</b> Graph Problems</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="graph-problems.html"><a href="graph-problems.html#maximum-weight-matching"><i class="fa fa-check"></i><b>4.1</b> Maximum weight matching</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="graph-problems.html"><a href="graph-problems.html#introduction-and-setting"><i class="fa fa-check"></i><b>4.1.1</b> Introduction and Setting</a></li>
+<li class="chapter" data-level="4.1.2" data-path="graph-problems.html"><a href="graph-problems.html#the-model-and-solution"><i class="fa fa-check"></i><b>4.1.2</b> The model and solution</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i><b>5</b> References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Practical Discrete Optimization in R: A Cookbook</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="graph-problems" class="section level1" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Graph Problems</h1>
+<div id="maximum-weight-matching" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Maximum weight matching</h2>
+<div id="introduction-and-setting" class="section level3" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Introduction and Setting</h3>
+<p>To quote <a href="https://en.wikipedia.org/wiki/Maximum_weight_matching">Wikipedia</a>:</p>
+<blockquote>
+<p>In computer science, the maximum weight matching problem is the problem of finding, in a weighted graph, a matching in which the sum of weights is maximized.</p>
+</blockquote>
+<p>Our setting is a weighted, undirected graph <span class="math inline">\(G=(V,E)\)</span> and we are interested in
+finding a subset of edges such that the set is a <a href="https://en.wikipedia.org/wiki/Matching_(graph_theory)">matching</a> (i.e. no
+two edges share the same vertex) and the sum of the weights is maximal.</p>
+<p>We will use the igraph package to construct a sample graph:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="graph-problems.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb1-2"><a href="graph-problems.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-3"><a href="graph-problems.html#cb1-3" aria-hidden="true" tabindex="-1"></a>graph <span class="ot">&lt;-</span> <span class="fu">make_graph</span>(<span class="st">&quot;House&quot;</span>)</span>
+<span id="cb1-4"><a href="graph-problems.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(graph)<span class="sc">$</span>weight <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="fu">ecount</span>(graph), <span class="at">lambda =</span> <span class="dv">5</span>)</span>
+<span id="cb1-5"><a href="graph-problems.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(graph, <span class="at">edge.label =</span> <span class="fu">E</span>(graph)<span class="sc">$</span>weight)</span></code></pre></div>
+<p><img src="cookbook_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+</div>
+<div id="the-model-and-solution" class="section level3" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> The model and solution</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="graph-problems.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rmpk)</span>
+<span id="cb2-2"><a href="graph-problems.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ROI.plugin.glpk)</span>
+<span id="cb2-3"><a href="graph-problems.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># we start with an empty model and GLPK as the solver</span></span>
+<span id="cb2-4"><a href="graph-problems.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: cite a good book/paper regarding the problem and add a proper latex description of the problem</span></span>
+<span id="cb2-5"><a href="graph-problems.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># In the meatime, please refer to https://www.arl.wustl.edu/~jst/cse/542/text/sec15.pdf</span></span>
+<span id="cb2-6"><a href="graph-problems.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or https://cs.stackexchange.com/questions/104017/maximum-matching-using-linear-programming</span></span>
+<span id="cb2-7"><a href="graph-problems.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># for more information/references</span></span>
+<span id="cb2-8"><a href="graph-problems.html#cb2-8" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">optimization_model</span>(<span class="fu">ROI_optimizer</span>(<span class="st">&quot;glpk&quot;</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb2-9"><a href="graph-problems.html#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="graph-problems.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># for each edge we define a 0-1 variable that indicates if the edge is part</span></span>
+<span id="cb2-11"><a href="graph-problems.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># of the matching or not.</span></span>
+<span id="cb2-12"><a href="graph-problems.html#cb2-12" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> model<span class="sc">$</span><span class="fu">add_variable</span>(<span class="st">&quot;x&quot;</span>, <span class="at">edge =</span> <span class="fu">E</span>(graph), <span class="at">type =</span> <span class="st">&quot;binary&quot;</span>)</span>
+<span id="cb2-13"><a href="graph-problems.html#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="graph-problems.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># now we maximise the sum of the weight of all selected edges</span></span>
+<span id="cb2-15"><a href="graph-problems.html#cb2-15" aria-hidden="true" tabindex="-1"></a>weight <span class="ot">&lt;-</span> <span class="fu">E</span>(graph)<span class="sc">$</span>weight</span>
+<span id="cb2-16"><a href="graph-problems.html#cb2-16" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">set_objective</span>(</span>
+<span id="cb2-17"><a href="graph-problems.html#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum_expr</span>(weight[edge] <span class="sc">*</span> x[edge], <span class="at">edge =</span> <span class="fu">E</span>(graph)),</span>
+<span id="cb2-18"><a href="graph-problems.html#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">sense =</span> <span class="st">&quot;max&quot;</span></span>
+<span id="cb2-19"><a href="graph-problems.html#cb2-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-20"><a href="graph-problems.html#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="graph-problems.html#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># at last we need to make sure that each vertex is only connected to at most</span></span>
+<span id="cb2-22"><a href="graph-problems.html#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 edge. I.e. the sum of selected edges incident to a given vertex cannot be</span></span>
+<span id="cb2-23"><a href="graph-problems.html#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># larger than 1.</span></span>
+<span id="cb2-24"><a href="graph-problems.html#cb2-24" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">add_constraint</span>(</span>
+<span id="cb2-25"><a href="graph-problems.html#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum_expr</span>(x[edge], <span class="at">edge =</span> <span class="fu">incident</span>(graph, vertex)) <span class="sc">&lt;=</span> <span class="dv">1</span>, </span>
+<span id="cb2-26"><a href="graph-problems.html#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">vertex =</span> <span class="fu">V</span>(graph)</span>
+<span id="cb2-27"><a href="graph-problems.html#cb2-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-28"><a href="graph-problems.html#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="graph-problems.html#cb2-29" aria-hidden="true" tabindex="-1"></a>model<span class="sc">$</span><span class="fu">optimize</span>()</span></code></pre></div>
+<pre><code>## &lt;SOLVER MSG&gt;  ----
+## GLPK Simplex Optimizer, v4.65
+## 5 rows, 6 columns, 12 non-zeros
+## *     0: obj =  -0.000000000e+00 inf =   0.000e+00 (6)
+## *     6: obj =   1.350000000e+01 inf =   0.000e+00 (0)
+## OPTIMAL LP SOLUTION FOUND
+## GLPK Integer Optimizer, v4.65
+## 5 rows, 6 columns, 12 non-zeros
+## 6 integer variables, all of which are binary
+## Integer optimization begins...
+## Long-step dual simplex will be used
+## +     6: mip =     not found yet &lt;=              +inf        (1; 0)
+## +     7: &gt;&gt;&gt;&gt;&gt;   1.300000000e+01 &lt;=   1.300000000e+01   0.0% (2; 0)
+## +     7: mip =   1.300000000e+01 &lt;=     tree is empty   0.0% (0; 3)
+## INTEGER OPTIMAL SOLUTION FOUND
+## &lt;!SOLVER MSG&gt; ----</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="graph-problems.html#cb4-1" aria-hidden="true" tabindex="-1"></a>(solution <span class="ot">&lt;-</span> model<span class="sc">$</span><span class="fu">get_variable_value</span>(x[edge]))</span></code></pre></div>
+<pre><code>##   name edge value
+## 1    x    1     1
+## 2    x    3     0
+## 3    x    5     1
+## 4    x    4     0
+## 5    x    2     0
+## 6    x    6     0</code></pre>
+<p>And now we can plot the provable, optimal solution with objective value 13:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="graph-problems.html#cb6-1" aria-hidden="true" tabindex="-1"></a>selected_edges <span class="ot">&lt;-</span> solution[solution<span class="sc">$</span>value <span class="sc">==</span> <span class="dv">1</span>, ]<span class="sc">$</span>edge</span>
+<span id="cb6-2"><a href="graph-problems.html#cb6-2" aria-hidden="true" tabindex="-1"></a>color <span class="ot">&lt;-</span> <span class="fu">rep.int</span>(<span class="st">&quot;black&quot;</span>, <span class="fu">ecount</span>(graph))</span>
+<span id="cb6-3"><a href="graph-problems.html#cb6-3" aria-hidden="true" tabindex="-1"></a>color[selected_edges] <span class="ot">&lt;-</span> <span class="st">&quot;red&quot;</span></span>
+<span id="cb6-4"><a href="graph-problems.html#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(graph)<span class="sc">$</span>color <span class="ot">&lt;-</span> color</span>
+<span id="cb6-5"><a href="graph-problems.html#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(graph, <span class="at">edge.label =</span> <span class="fu">E</span>(graph)<span class="sc">$</span>weight)</span></code></pre></div>
+<p><img src="cookbook_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="routing-problems.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -8,4 +8,8 @@ the-traveling-salesperson-problem-using-milp
 setting
 model-formulation
 results
+graph-problems
+maximum-weight-matching
+introduction-and-setting
+the-model-and-solution
 references

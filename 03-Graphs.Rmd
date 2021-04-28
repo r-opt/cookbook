@@ -1,0 +1,71 @@
+# Graph Problems
+
+## Maximum weight matching
+
+### Introduction and Setting
+
+To quote [Wikipedia](https://en.wikipedia.org/wiki/Maximum_weight_matching):
+
+> In computer science, the maximum weight matching problem is the problem of finding, in a weighted graph, a matching in which the sum of weights is maximized.
+
+Our setting is a weighted, undirected graph $G=(V,E)$ and we are interested in
+finding a subset of edges such that the set is a [matching](https://en.wikipedia.org/wiki/Matching_(graph_theory)) (i.e. no
+two edges share the same vertex) and the sum of the weights is maximal.
+
+We will use the igraph package to construct a sample graph:
+
+```{r}
+library(igraph)
+set.seed(123)
+graph <- make_graph("House")
+E(graph)$weight <- rpois(ecount(graph), lambda = 5)
+plot(graph, edge.label = E(graph)$weight)
+```
+
+### The model and solution
+
+```{r}
+library(rmpk)
+library(ROI.plugin.glpk)
+# we start with an empty model and GLPK as the solver
+# TODO: cite a good book/paper regarding the problem and add a proper latex description of the problem
+# In the meatime, please refer to https://www.arl.wustl.edu/~jst/cse/542/text/sec15.pdf
+# or https://cs.stackexchange.com/questions/104017/maximum-matching-using-linear-programming
+# for more information/references
+model <- optimization_model(ROI_optimizer("glpk", control = list(verbose = TRUE)))
+
+# for each edge we define a 0-1 variable that indicates if the edge is part
+# of the matching or not.
+x <- model$add_variable("x", edge = E(graph), type = "binary")
+
+# now we maximise the sum of the weight of all selected edges
+weight <- E(graph)$weight
+model$set_objective(
+  sum_expr(weight[edge] * x[edge], edge = E(graph)),
+  sense = "max"
+)
+
+# at last we need to make sure that each vertex is only connected to at most
+# 1 edge. I.e. the sum of selected edges incident to a given vertex cannot be
+# larger than 1.
+model$add_constraint(
+  sum_expr(x[edge], edge = incident(graph, vertex)) <= 1, 
+  vertex = V(graph)
+)
+
+model$optimize()
+```
+```{r}
+(solution <- model$get_variable_value(x[edge]))
+```
+
+And now we can plot the provable, optimal solution with objective value `r model$objective_value()`:
+
+```{r}
+selected_edges <- solution[solution$value == 1, ]$edge
+color <- rep.int("black", ecount(graph))
+color[selected_edges] <- "red"
+E(graph)$color <- color
+plot(graph, edge.label = E(graph)$weight)
+```
+
